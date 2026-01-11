@@ -1,59 +1,91 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- Pixel font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<!-- Pixel font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-  <style>
-    html, body {
-      margin: 0;
-      height: 100%;
-      background: #000;
-      overflow: hidden;
-    }
+<style>
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+}
 
-    .screen {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      white-space: nowrap;
-      color: #fff; /* white */
-      font-family: "Press Start 2P", monospace;
-      font-size: 150px; /* adjust to fit your screen */
-      line-height: 1;
-      /* optional: crisp pixel look */
-      -webkit-font-smoothing: none;
-      text-rendering: geometricPrecision;
-    }
+.screen {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
 
-    .marquee {
-      display: inline-block;
-      padding-left: 100%;
-      animation: scroll 10s linear infinite;
-    }
+  display: flex;
+  align-items: center;
 
-    @keyframes scroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-100%); }
-    }
-  </style>
+  font-family: "Press Start 2P", monospace;
+  font-size: 22px;   /* Adjust to fit your mesh */
+  line-height: 1;
+  color: #ffffff;   /* WHITE TEXT */
+}
+
+.marquee {
+  position: absolute;
+  left: 0;
+  white-space: nowrap;
+  will-change: transform;
+
+  transform: translateX(100%);
+  animation-name: scrollpx;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes scrollpx {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(var(--endX)); }
+}
+</style>
 </head>
 
 <body>
-  <div class="screen">
-    <div id="t" class="marquee">Loading…</div>
-  </div>
+<div class="screen">
+  <div id="t" class="marquee">Loading…</div>
+</div>
 
-  <script>
-    const p = new URLSearchParams(location.search);
-    const title = p.get("title") || "Now Playing: Test Song";
-    document.getElementById("t").textContent = title;
-  </script>
+<script>
+const params = new URLSearchParams(location.search);
+const title = params.get("title") || "Untitled";
+
+const el = document.getElementById("t");
+el.textContent = title;
+
+function setupMarquee()
+{
+  const speed = 80; // pixels per second (lower = slower)
+
+  const textWidth = el.getBoundingClientRect().width;
+  const screenWidth = document.documentElement.clientWidth;
+
+  el.style.setProperty("--endX", `-${textWidth}px`);
+
+  const distance = screenWidth + textWidth;
+  const duration = distance / speed;
+
+  el.style.animationDuration = `${duration}s`;
+}
+
+// Initial + after font load
+setupMarquee();
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(setupMarquee);
+}
+
+window.addEventListener("resize", setupMarquee);
+</script>
 </body>
 </html>
+
 
