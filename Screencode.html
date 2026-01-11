@@ -57,7 +57,7 @@ html, body {
 
 <script>
 const params = new URLSearchParams(location.search);
-const title = params.get("title") || "Untitled";
+const title = params.get("title") || "Type /1234 <text>";
 
 const el = document.getElementById("t");
 el.textContent = title;
@@ -87,6 +87,7 @@ window.addEventListener("resize", setupMarquee);
 </script>
 </body>
 </html>
+
 
 
 
