@@ -24,7 +24,7 @@
       white-space: nowrap;
       color: #fff; /* white */
       font-family: "Press Start 2P", monospace;
-      font-size: 22px; /* adjust to fit your screen */
+      font-size: 150px; /* adjust to fit your screen */
       line-height: 1;
       /* optional: crisp pixel look */
       -webkit-font-smoothing: none;
@@ -51,8 +51,9 @@
 
   <script>
     const p = new URLSearchParams(location.search);
-    const title = p.get("title") || "Untitled";
+    const title = p.get("title") || "Now Playing: Test Song";
     document.getElementById("t").textContent = title;
   </script>
 </body>
 </html>
+
